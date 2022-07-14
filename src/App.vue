@@ -1,28 +1,68 @@
 <template>
-  <Schedule />
+  <VueCal :events="events" />
   <RegisterForm />
 </template>
 
 <script>
-import Schedule from './components/Schedule.vue';
 import RegisterForm from './components/RegisterForm.vue';
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css';
+import Event from './services/event';
 
 export default {
   name: 'App',
   components: {
     RegisterForm,
-    Schedule
+    VueCal
   },
+  data: () => (
+    {
+      events: []
+    }
+  ),
+  mounted() {
+    Event.getAll().then(response => {
+      this.alterEvents(response.data);
+    });
+  },
+  methods: {
+    alterEvents(content) {
+      for (var i = 0; i < content.length; i++) {
+        this.events.push({
+          start: this.formatDate(content[i].start),
+          end: this.formatDate(content[i].end),
+          title: content[i].name
+        });
+      }
+    },
+    formatDate(date) {
+
+      var year = date.substr(0, 4);
+      var day = date.substr(5, 2);
+      var month = date.substr(8, 2);
+      var hour = date.substr(11, 2);
+      var minute = date.substr(14, 2);
+
+      return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+    }
+  }
 }
 </script>
 
 <style>
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-#subTittle{
+
+.vuecal {
+  margin: auto;
+  max-width: 1300px;
+  max-height: 662px;
+}
+
+#subTittle {
   background-color: rgb(0, 0, 153);
   color: white;
   display: flex;
@@ -31,7 +71,8 @@ export default {
   width: 100%;
   padding-left: 1vmin;
 }
-#eventForm{
+
+#eventForm {
   width: 100%;
   height: fit-content;
   border: none;
@@ -42,19 +83,23 @@ export default {
   padding: 2vmin;
   background-color: rgb(243, 243, 243);
 }
-.textBox{
+
+.textBox {
   width: 97%;
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
 }
-#eventName{
+
+#eventName {
   height: 6vmin;
 }
-textarea{
+
+textarea {
   height: 10vmin;
 }
-#boxDay{
+
+#boxDay {
   width: 20%;
   height: 15vmin;
   display: flex;
@@ -62,41 +107,49 @@ textarea{
   align-items: center;
   font-size: 2.5vmin;
 }
-#textDay{
+
+#textDay {
   font-size: 4vmin;
   height: 4vmin;
   width: 95%;
 }
-.option{
+
+.option {
   width: fit-content;
   height: fit-content;
   font-size: 3vmin;
 }
-#boxDay label{
+
+#boxDay label {
   padding: 0;
   margin-left: 5%;
 }
-#leftContent{
+
+#leftContent {
   width: 100%;
   height: fit-content;
   height: fit-content;
   display: flex;
 }
-.spaceDate{
+
+.spaceDate {
   width: 45%;
   margin-left: 4%;
 }
-#spaceRadio{
+
+#spaceRadio {
   width: fit-content;
   height: 10vmin;
   display: flex;
   flex-direction: column;
 }
-.formSubmit{
+
+.formSubmit {
   width: fit-content;
   margin-left: 30%;
 }
-#buttonSubmit{
+
+#buttonSubmit {
   padding: 2%;
   height: fit-content;
   background-color: blueviolet;
@@ -106,55 +159,66 @@ textarea{
   margin-left: 62vw;
   transition: 0.3s;
 }
-#buttonSubmit:hover{
+
+#buttonSubmit:hover {
   background-color: rgb(200, 140, 255);
   color: black;
   cursor: pointer;
 }
 
-#schedule{
+#schedule {
   width: 100%;
   height: fit-content;
   margin-bottom: 10vmin;
 }
-#schedule header{
+
+#schedule header {
   width: 100%;
   background-color: rgb(5, 5, 160);
   text-align: center;
 }
-#firstLine a{
+
+#firstLine a {
   text-decoration: none;
   color: white;
   padding-left: 1vmin;
 }
-#week{
-  background-color:rgb(236, 236, 236);
+
+#week {
+  background-color: rgb(236, 236, 236);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 5vmin;
 }
-table{
+
+table {
   width: 100%;
 }
-thead{
+
+thead {
   width: 100%
 }
-tr{
+
+tr {
   width: 100%;
 }
-th{
+
+th {
   width: 14.28%;
   background-color: green;
 }
-tbody{
+
+tbody {
   width: 100%;
 }
-td{
-    text-align: center;
-    background-color: rgb(8, 59, 8);
+
+td {
+  text-align: center;
+  background-color: rgb(8, 59, 8);
 }
-.busy{
+
+.busy {
   background-color: rgb(247, 238, 159);
 }
 </style>

@@ -16,7 +16,7 @@
                         <label>Início:</label>
                         <select class="option" name="startDate" id="startDate" v-model="event.start">
                             <option>Select</option>
-                            <option>08:00</option>
+                            <option>{{this.today}}:08:00</option>
                             <option></option>
                         </select>
                     </div>
@@ -24,7 +24,7 @@
                         <label>Término:</label>
                         <select class="option" name="endDate" id="endDate" v-model="event.end">
                             <option>Select</option>
-                            <option>18:00</option>
+                            <option>{{this.today}}:09:00</option>
                             <option></option>
                         </select>
                     </div>
@@ -48,7 +48,8 @@
 
 <script>
 import Event from '@/services/event';
-
+const date = new Date();
+const today = date.getFullYear() + '-' + date.getDate() + '-' + '0' + (date.getMonth() + 1);
 export default {
     name: 'RegisterForm',
     data() {
@@ -56,11 +57,11 @@ export default {
             event: {
                 name: '',
                 description: '',
-                day: '',
                 start: '',
                 end: '',
                 recurrence: ''
-            }
+            },
+            today: today
         }
     },
     methods: {
