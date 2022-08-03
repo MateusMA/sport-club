@@ -29,21 +29,11 @@ export default {
     alterEvents(content) {
       for (var i = 0; i < content.length; i++) {
         this.events.push({
-          start: this.formatDate(content[i].start),
-          end: this.formatDate(content[i].end),
+          start: content[i].start,
+          end: content[i].end,
           title: content[i].name
         });
       }
-    },
-    formatDate(date) {
-
-      var year = date.substr(0, 4);
-      var day = date.substr(5, 2);
-      var month = date.substr(8, 2);
-      var hour = date.substr(11, 2);
-      var minute = date.substr(14, 2);
-
-      return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
     }
   }
 }
